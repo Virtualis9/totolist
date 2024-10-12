@@ -1,4 +1,7 @@
 <script setup>
+
+import { defineProps } from 'vue';
+
 defineProps({
     cars: {
         required: true,

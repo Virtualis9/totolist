@@ -4,8 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Task;
 
 Route::get('/', function () {
+
     $cars = [
         'mercedes' => 'amg',
         'audi' => 'a4',
@@ -15,8 +17,21 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'cars' => $cars
     ]);
+
 })->name('welcome');
 
+
+Route::get('/tasks', function () {
+    $tasks = Task::latest()->get();
+    return Inertia::render('Tasks', ['tasks' => $tasks]);
+})->name('tasks.index');
+
+Route::get('/tasks/{task}', function ($id) {
+    $task = Task::findorfail($id);
+    return Inertia::render('Tasks/TaskShow', ['task' => $task]);
+})->name('tasks.show');
+
+Route::inertia('/tasks/create', 'Tasks/TaskCreate')->name('tasks.create');
 
 Route::get('/hallo', function () {
     return redirect()->route('welcome');
